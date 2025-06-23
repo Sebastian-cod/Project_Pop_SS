@@ -31,3 +31,30 @@ def refresh_event_list():
     listbox_events.delete(0, END)
     for event in events:
         listbox_events.insert(END, f"{event.name} ({event.location})")
+
+        def update_event():
+            idx = listbox_events.curselection()
+            if not idx:
+                return
+            event = events[idx[0]]
+            name = entry_event_name.get()
+            loc = entry_event_location.get()
+            if name and loc:
+                event.name = name
+                event.location = loc
+                event.coordinates = Person(name, '', loc).coordinates
+                if event.marker:
+                    event.marker.delete()
+                event.marker = map_widget.set_marker(*event.coordinates, text=event.name)
+                refresh_event_list()
+                clear_inputs()
+
+        def delete_event():
+            idx = listbox_events.curselection()
+            if not idx:
+                return
+            event = events.pop(idx[0])
+            if event.marker:
+                event.marker.delete()
+            refresh_event_list()
+            refresh_people_lists()
