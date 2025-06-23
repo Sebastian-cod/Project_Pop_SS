@@ -73,3 +73,15 @@ def refresh_event_list():
                     clear_inputs()
                     refresh_people_lists()
 
+                    def refresh_people_lists():
+                        listbox_clients.delete(0, END)
+                        listbox_workers.delete(0, END)
+                        idx = listbox_events.curselection()
+                        if not idx:
+                            return
+                        event = events[idx[0]]
+                        for k in event.klienci:
+                            listbox_clients.insert(END, f"{k.name} {k.surname} ({k.location})")
+                        for p in event.pracownicy:
+                            listbox_workers.insert(END, f"{p.name} {p.surname} ({p.location})")
+
