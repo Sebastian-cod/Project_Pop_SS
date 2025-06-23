@@ -58,3 +58,18 @@ def refresh_event_list():
                 event.marker.delete()
             refresh_event_list()
             refresh_people_lists()
+
+            def add_person(role):
+                idx = listbox_events.curselection()
+                if not idx:
+                    return
+                event = events[idx[0]]
+                name = entry_person_name.get()
+                surname = entry_person_surname.get()
+                loc = entry_person_location.get()
+                if name and surname and loc:
+                    person = Person(name, surname, loc)
+                    (event.klienci if role == 'klient' else event.pracownicy).append(person)
+                    clear_inputs()
+                    refresh_people_lists()
+
