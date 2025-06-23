@@ -85,3 +85,13 @@ def refresh_event_list():
                         for p in event.pracownicy:
                             listbox_workers.insert(END, f"{p.name} {p.surname} ({p.location})")
 
+def show_people(role):
+    idx = listbox_events.curselection()
+    if not idx:
+        return
+    event = events[idx[0]]
+    map_widget.delete_all_marker()
+    people = event.klienci if role == 'klient' else event.pracownicy
+    for person in people:
+        person.marker = map_widget.set_marker(*person.coordinates, text=f"{person.name} {person.surname}")
+    refresh_people_lists()
